@@ -3,7 +3,7 @@
 import { useForm } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -16,8 +16,10 @@ type SettingsFormProps = {
 
 export function SettingsForm({ initialValues }: SettingsFormProps) {
 	const queryClient = useQueryClient();
+	const [hydrated, setHydrated] = useState(false);
 	const [saved, setSaved] = useState(false);
 	const [submitError, setSubmitError] = useState<string>();
+	useEffect(() => setHydrated(true), []);
 	const form = useForm({
 		defaultValues: initialValues,
 		validators: { onSubmit: settingsSchema },
@@ -41,6 +43,7 @@ export function SettingsForm({ initialValues }: SettingsFormProps) {
 	return (
 		<form
 			className="island-shell max-w-2xl rounded-3xl p-6 md:p-8"
+			data-hydrated={hydrated}
 			onSubmit={(event) => {
 				event.preventDefault();
 				event.stopPropagation();

@@ -17,4 +17,18 @@ test("submits a new application and returns to the dashboard", async ({ page }) 
 	await page.getByRole("button", { name: "Save application" }).click();
 
 	await expect(page).toHaveURL(/\/$/);
+
+	await page.goto("/settings");
+	await expect(page.locator("form")).toHaveAttribute("data-hydrated", "true");
+	const thresholdInput = page.getByLabel("Days before an application is stalled");
+	await expect(thresholdInput).toHaveValue(/\d+/);
+	await thresholdInput.fill("21");
+	await page.getByRole("button", { name: "Save settings" }).click();
+	await expect(page.getByText("Settings saved.")).toBeVisible();
+	await page.reload();
+	await expect(page.locator("form")).toHaveAttribute("data-hydrated", "true");
+	await expect(page.getByLabel("Days before an application is stalled")).toHaveValue("21");
+
+	await page.goto("/");
+	await expect(page.getByRole("heading", { name: "Keep every opportunity in view." })).toBeVisible();
 });
