@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApplicationsNewRouteImport } from './routes/applications/new'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApplicationsApplicationIdEditRouteImport } from './routes/applications/$applicationId/edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplicationsNewRoute = ApplicationsNewRouteImport.update({
+  id: '/applications/new',
+  path: '/applications/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -22,31 +29,58 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplicationsApplicationIdEditRoute =
+  ApplicationsApplicationIdEditRouteImport.update({
+    id: '/applications/$applicationId/edit',
+    path: '/applications/$applicationId/edit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/$'
+  fullPaths:
+    | '/'
+    | '/applications/new'
+    | '/api/auth/$'
+    | '/applications/$applicationId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$'
-  id: '__root__' | '/' | '/api/auth/$'
+  to:
+    | '/'
+    | '/applications/new'
+    | '/api/auth/$'
+    | '/applications/$applicationId/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/applications/new'
+    | '/api/auth/$'
+    | '/applications/$applicationId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApplicationsNewRoute: typeof ApplicationsNewRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApplicationsApplicationIdEditRoute: typeof ApplicationsApplicationIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/applications/new': {
+      id: '/applications/new'
+      path: '/applications/new'
+      fullPath: '/applications/new'
+      preLoaderRoute: typeof ApplicationsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -65,12 +106,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/applications/$applicationId/edit': {
+      id: '/applications/$applicationId/edit'
+      path: '/applications/$applicationId/edit'
+      fullPath: '/applications/$applicationId/edit'
+      preLoaderRoute: typeof ApplicationsApplicationIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApplicationsNewRoute: ApplicationsNewRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApplicationsApplicationIdEditRoute: ApplicationsApplicationIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
