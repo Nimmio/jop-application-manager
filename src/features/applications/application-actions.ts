@@ -45,3 +45,14 @@ export const getApplication = createServerFn({ method: "GET" })
 	.handler(async ({ data }) => {
 		return prisma.application.findUniqueOrThrow({ where: { id: data.id } });
 	});
+
+export const getApplications = createServerFn({ method: "GET" }).handler(async () => {
+		return prisma.application.findMany({ orderBy: { updatedAt: "desc" } });
+	});
+
+export const getGlobalSettings = createServerFn({ method: "GET" }).handler(async () => {
+		return prisma.globalSettings.findFirst({
+			orderBy: { id: "asc" },
+			select: { stalledThresholdDays: true },
+		});
+	});
