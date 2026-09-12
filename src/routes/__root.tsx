@@ -8,10 +8,9 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Header } from "#/components/header";
 import { ThemeProvider } from "#/components/theme-provider";
-import TanstackQueryProvider from "../integrations/tanstack-query/root-provider";
-
 import { getLocale } from "#/paraglide/runtime";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import TanstackQueryProvider from "../integrations/tanstack-query/root-provider";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {

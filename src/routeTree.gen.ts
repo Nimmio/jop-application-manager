@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ApplicationsNewRouteImport } from './routes/applications/new'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApplicationsApplicationIdEditRouteImport } from './routes/applications/$applicationId/edit'
@@ -17,6 +18,11 @@ import { Route as ApplicationsApplicationIdEditRouteImport } from './routes/appl
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplicationsNewRoute = ApplicationsNewRouteImport.update({
@@ -38,12 +44,14 @@ const ApplicationsApplicationIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
@@ -51,6 +59,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRoute
   '/applications/new': typeof ApplicationsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/applications/$applicationId/edit': typeof ApplicationsApplicationIdEditRoute
@@ -59,18 +68,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/settings'
     | '/applications/new'
     | '/api/auth/$'
     | '/applications/$applicationId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/settings'
     | '/applications/new'
     | '/api/auth/$'
     | '/applications/$applicationId/edit'
   id:
     | '__root__'
     | '/'
+    | '/settings'
     | '/applications/new'
     | '/api/auth/$'
     | '/applications/$applicationId/edit'
@@ -78,6 +90,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SettingsRoute: typeof SettingsRoute
   ApplicationsNewRoute: typeof ApplicationsNewRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApplicationsApplicationIdEditRoute: typeof ApplicationsApplicationIdEditRoute
@@ -90,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/applications/new': {
@@ -118,6 +138,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SettingsRoute: SettingsRoute,
   ApplicationsNewRoute: ApplicationsNewRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApplicationsApplicationIdEditRoute: ApplicationsApplicationIdEditRoute,
