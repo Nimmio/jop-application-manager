@@ -6,6 +6,7 @@ import { Dashboard } from "./dashboard";
 const applications = [
 	{
 		id: "cmj5w5j4u0000qz1n8h0z8j7a",
+		userId: "test-user",
 		companyName: "Northwind Labs",
 		jobTitle: "Frontend Engineer",
 		url: null,
@@ -21,6 +22,7 @@ const applications = [
 	},
 	{
 		id: "cmj5w5j4u0001qz1n8h0z8j7b",
+		userId: "test-user",
 		companyName: "Acme Digital",
 		jobTitle: "Product Designer",
 		url: null,
@@ -36,6 +38,7 @@ const applications = [
 	},
 	{
 		id: "cmj5w5j4u0002qz1n8h0z8j7c",
+		userId: "test-user",
 		companyName: "Cloud Harbor",
 		jobTitle: "Backend Engineer",
 		url: null,

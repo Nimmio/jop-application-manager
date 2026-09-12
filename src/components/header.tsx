@@ -4,6 +4,7 @@ import { useRouterState } from "@tanstack/react-router";
 import { BriefcaseBusiness, Plus } from "lucide-react";
 
 import { ThemeToggle } from "#/components/theme-toggle";
+import BetterAuthHeader from "#/integrations/better-auth/header-user";
 
 const navigation = [
 	{ href: "/", label: "Dashboard" },
@@ -15,6 +16,7 @@ export function Header() {
 	const pathname = useRouterState({
 		select: (state) => state.location.pathname,
 	});
+	if (pathname === "/auth") return null;
 
 	return (
 		<header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--header-bg)] backdrop-blur-xl">
@@ -65,6 +67,7 @@ export function Header() {
 						Track an application
 					</a>
 					<ThemeToggle />
+					<BetterAuthHeader />
 				</div>
 			</div>
 		</header>
