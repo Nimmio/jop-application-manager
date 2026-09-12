@@ -1,20 +1,20 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from "vite";
-import { devtools } from "@tanstack/devtools-vite";
+
+import path from "node:path";
 import { paraglideVitePlugin } from "@inlang/paraglide-js";
+import babel from "@rolldown/plugin-babel";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
-import babel from "@rolldown/plugin-babel";
-import tailwindcss from "@tailwindcss/vite";
-import { nitro } from "nitro/vite";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
-const dirname =
-	typeof __dirname !== "undefined"
-		? __dirname
-		: path.dirname(fileURLToPath(import.meta.url));
+import { nitro } from "nitro/vite";
+import { defineConfig } from "vite";
+
+// `import.meta.dirname` is supported by the native Vite config loader and
+// avoids the deprecated CommonJS `__dirname` fallback.
+const dirname = import.meta.dirname;
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 const config = defineConfig({
