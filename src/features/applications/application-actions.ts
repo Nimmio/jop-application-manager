@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-
+import { getRequestHeaders } from "@tanstack/react-start/server";
+import { auth } from "#/lib/auth";
 import { prisma } from "#/lib/prisma";
 import {
 	type ApplicationFormValues,
@@ -21,10 +22,19 @@ const toDatabaseData = (data: ApplicationFormValues) => ({
 	notes: data.notes || undefined,
 });
 
+async function currentUser() {
+	const session = await auth.api.getSession({ headers: getRequestHeaders() });
+	if (!session?.user) throw new Error("Authentication required");
+	return session.user;
+}
+
 export const createApplication = createServerFn({ method: "POST" })
 	.validator(applicationFormSchema)
 	.handler(async ({ data }) => {
-		return prisma.application.create({ data: toDatabaseData(data) });
+		const user = await currentUser();
+		return prisma.application.create({
+			data: { ...toDatabaseData(data), userId: user.id },
+		});
 	});
 
 export const updateApplication = createServerFn({ method: "POST" })
@@ -34,8 +44,9 @@ export const updateApplication = createServerFn({ method: "POST" })
 		}),
 	)
 	.handler(async ({ data }) => {
+		const user = await currentUser();
 		return prisma.application.update({
-			where: { id: data.id },
+			where: { id: data.id, userId: user.id },
 			data: toDatabaseData(data.data),
 		});
 	});
@@ -43,16 +54,27 @@ export const updateApplication = createServerFn({ method: "POST" })
 export const getApplication = createServerFn({ method: "GET" })
 	.validator(applicationIdSchema)
 	.handler(async ({ data }) => {
-		return prisma.application.findUniqueOrThrow({ where: { id: data.id } });
+		const user = await currentUser();
+		return prisma.application.findFirstOrThrow({
+			where: { id: data.id, userId: user.id },
+		});
 	});
 
-export const getApplications = createServerFn({ method: "GET" }).handler(async () => {
-		return prisma.application.findMany({ orderBy: { updatedAt: "desc" } });
-	});
+export const getApplications = createServerFn({ method: "GET" }).handler(
+	async () => {
+		const user = await currentUser();
+		return prisma.application.findMany({
+			where: { userId: user.id },
+			orderBy: { updatedAt: "desc" },
+		});
+	},
+);
 
-export const getGlobalSettings = createServerFn({ method: "GET" }).handler(async () => {
+export const getGlobalSettings = createServerFn({ method: "GET" }).handler(
+	async () => {
 		return prisma.globalSettings.findFirst({
 			orderBy: { id: "asc" },
 			select: { stalledThresholdDays: true },
 		});
-	});
+	},
+);

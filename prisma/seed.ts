@@ -3,6 +3,19 @@ import { PrismaClient, ApplicationStatus, WorkMode } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Keep the demo data owned by a real user so it can never be exposed to
+  // another account. The email is deterministic, making the seed repeatable.
+  const demoUser = await prisma.user.upsert({
+    where: { email: "demo@example.com" },
+    update: {},
+    create: {
+      id: "seed-demo-user",
+      name: "Demo User",
+      email: "demo@example.com",
+      emailVerified: true,
+    },
+  });
+
   await prisma.application.createMany({
     data: [
       {
@@ -16,6 +29,7 @@ async function main() {
         contactName: "Lea Fischer",
         contactEmail: "lea.fischer@example.com",
         notes: "Technical interview scheduled for next week.",
+        userId: demoUser.id,
       },
       {
         companyName: "Acme Digital",
@@ -26,6 +40,7 @@ async function main() {
         workMode: WorkMode.ON_SITE,
         status: ApplicationStatus.APPLIED,
         notes: "Application submitted through the company portal.",
+        userId: demoUser.id,
       },
       {
         companyName: "Cloud Harbor",
@@ -36,12 +51,15 @@ async function main() {
         contactName: "Jonas Weber",
         contactEmail: "jonas.weber@example.com",
         notes: "Offer received; reviewing compensation package.",
+        userId: demoUser.id,
       },
     ],
   });
 
-  await prisma.globalSettings.create({
-    data: { stalledThresholdDays: 14 },
+  await prisma.globalSettings.upsert({
+    where: { id: "seed-global-settings" },
+    update: { stalledThresholdDays: 14 },
+    create: { id: "seed-global-settings", stalledThresholdDays: 14 },
   });
 }
 
