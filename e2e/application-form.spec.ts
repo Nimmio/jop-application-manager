@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("submits a new application and returns to the dashboard", async ({ page }) => {
 	await page.goto("/applications/new");
+	await expect(page.locator("form")).toHaveAttribute("data-hydrated", "true");
 
 	await page.getByLabel("Company name").fill("Northwind Labs");
 	await page.getByLabel("Job title").fill("Frontend Engineer");

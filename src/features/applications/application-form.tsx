@@ -2,7 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "#/components/ui/button";
 import { DatePicker } from "#/components/ui/date-picker";
@@ -72,7 +72,9 @@ export function ApplicationForm({
 	defaultValues,
 }: ApplicationFormProps) {
 	const router = useRouter();
+	const [hydrated, setHydrated] = useState(false);
 	const [submitError, setSubmitError] = useState<string>();
+	useEffect(() => setHydrated(true), []);
 	const form = useForm({
 		defaultValues: defaultValues ?? emptyValues,
 		validators: { onSubmit: applicationFormSchema },
@@ -96,6 +98,7 @@ export function ApplicationForm({
 	return (
 		<form
 			className="page-wrap max-w-4xl py-10 md:py-14"
+			data-hydrated={hydrated}
 			onSubmit={(event) => {
 				event.preventDefault();
 				event.stopPropagation();
