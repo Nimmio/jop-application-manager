@@ -42,7 +42,7 @@ export function SettingsForm({ initialValues }: SettingsFormProps) {
 
 	return (
 		<form
-			className="island-shell max-w-2xl rounded-3xl p-6 md:p-8"
+			className="island-shell w-full rounded-3xl p-6 md:p-8"
 			data-hydrated={hydrated}
 			onSubmit={(event) => {
 				event.preventDefault();

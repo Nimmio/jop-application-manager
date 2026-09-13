@@ -119,7 +119,7 @@ export function ApplicationForm({
 				</p>
 			</div>
 
-			<section className="island-shell max-w-4xl rounded-3xl p-5 md:p-8">
+			<section className="island-shell w-full rounded-3xl p-5 md:p-8">
 				<div className="grid gap-5 md:grid-cols-2">
 					<form.Field name="companyName">
 						{(field) => (

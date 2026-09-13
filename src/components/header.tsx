@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { BriefcaseBusiness, Plus } from "lucide-react";
 
 import { ThemeToggle } from "#/components/theme-toggle";
@@ -21,7 +21,7 @@ export function Header() {
 	return (
 		<header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--header-bg)] backdrop-blur-xl">
 			<div className="page-wrap flex min-h-18 flex-wrap items-center justify-between gap-x-6 gap-y-3 py-3">
-				<a className="group flex items-center gap-3 no-underline" href="/">
+				<Link className="group flex items-center gap-3 no-underline" to="/">
 					<span className="flex size-10 items-center justify-center rounded-2xl bg-[var(--sea-ink)] text-[var(--foam)] shadow-lg shadow-[rgba(23,58,64,0.15)] transition-transform group-hover:-rotate-3">
 						<BriefcaseBusiness className="size-5" />
 					</span>
@@ -33,7 +33,7 @@ export function Header() {
 							Your next chapter
 						</span>
 					</span>
-				</a>
+				</Link>
 
 				<nav
 					aria-label="Main navigation"
@@ -46,26 +46,26 @@ export function Header() {
 								: pathname.startsWith(item.href);
 
 						return (
-							<a
+							<Link
 								aria-current={isActive ? "page" : undefined}
 								className={`nav-link text-sm font-semibold ${isActive ? "is-active" : ""}`}
-								href={item.href}
+								to={item.href}
 								key={item.href}
 							>
 								{item.label}
-							</a>
+							</Link>
 						);
 					})}
 				</nav>
 
 				<div className="flex items-center gap-2">
-					<a
+					<Link
 						className="hidden h-9 items-center gap-2 rounded-md bg-[var(--sea-ink)] px-3 text-sm font-bold text-[var(--foam)] no-underline shadow-sm transition-transform hover:-translate-y-0.5 sm:flex"
-						href="/applications/new"
+						to="/applications/new"
 					>
 						<Plus className="size-4" />
 						Track an application
-					</a>
+					</Link>
 					<ThemeToggle />
 					<BetterAuthHeader />
 				</div>

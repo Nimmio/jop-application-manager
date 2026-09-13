@@ -27,7 +27,7 @@ function SettingsPage() {
 			{settingsQuery.isPending ? (
 				<output
 					aria-label="Loading settings"
-					className="block h-56 max-w-2xl animate-pulse rounded-3xl bg-[var(--surface)]"
+					className="block h-56 w-full animate-pulse rounded-3xl bg-[var(--surface)]"
 				/>
 			) : settingsQuery.isError ? (
 				<p className="text-sm font-semibold text-destructive">
