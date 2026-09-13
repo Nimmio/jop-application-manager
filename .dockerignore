@@ -1,0 +1,10 @@
+.git
+.env
+.env.*
+!.env.example
+node_modules
+.output
+coverage
+playwright-report
+test-results
+storybook-static
